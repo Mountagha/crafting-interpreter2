@@ -24,14 +24,25 @@ static int simpleInstruction(const char* name, int offset) {
     return offset + 1;
 }
 
+static int getLine(Chunk* chunk, int index) {
+    int accumulator = 0;
+    for (int i = 1; i < chunk->lineCount; i += 2) {
+        accumulator += chunk->lines[i];
+        if (index < accumulator) return chunk->lines[i - 1];
+    }
+    return -1;
+}
+
 int disassembleInstruction(Chunk* chunk, int offset) {
+    int l1, l2;
     printf("%04d ", offset);
     if (offset > 0 && 
-        chunk->lines[offset] == chunk->lines[offset - 1]) {
+        getLine(chunk, offset) == getLine(chunk, offset - 1)) {
             printf("   | ");
     } else {
-        printf("%4d ", chunk->lines[offset]);
+        printf("%4d ", getLine(chunk, offset));
     }
+    
 
     uint8_t instruction = chunk->code[offset];
     switch (instruction) {

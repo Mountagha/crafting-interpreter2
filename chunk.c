@@ -6,6 +6,8 @@
 void initChunk(Chunk* chunk) {
     chunk->count = 0;
     chunk->capacity = 0;
+    chunk->lineCapacity = 0;
+    chunk->lineCount = 0; // line information need to grow differently than code.
     chunk->code = NULL;
     chunk->lines = NULL;
     initValueArray(&chunk->constants);
@@ -18,18 +20,39 @@ void freeChunk(Chunk* chunk) {
     initChunk(chunk);
 }
 
+static int isLineAdded(Chunk *code, int line) {
+    for (int i = 0; i<code->lineCount; i += 2) {
+        if (code->lines[i] == line) return i;
+    }
+    return -1;
+}
+
+
 void writeChunk(Chunk* chunk, uint8_t byte, int line) {
     if (chunk->capacity < chunk->count + 1) {
         int oldCapacity = chunk->capacity;
         chunk->capacity = GROW_CAPACITY(oldCapacity);
         chunk->code = GROW_ARRAY(uint8_t, chunk->code, 
             oldCapacity, chunk->capacity);
-        chunk->lines = GROW_ARRAY(int, chunk->lines,
-            oldCapacity, chunk->capacity);
     }
 
+    if (chunk->lineCapacity < chunk->lineCount + 2) {
+        int oldLineCapacity = chunk->lineCapacity;
+        chunk->lineCapacity = GROW_CAPACITY(oldLineCapacity);
+        chunk->lines = GROW_ARRAY(int, chunk->lines, 
+            oldLineCapacity, chunk->lineCapacity);
+    }
+
+    int position = 0;
+    if ((position = isLineAdded(chunk, line)) != -1) {
+        chunk->lines[position+1]++;
+    } else {
+        chunk->lines[chunk->lineCount] = line;
+        chunk->lineCount++;
+        chunk->lines[chunk->lineCount] = 1; // first occurence.
+        chunk->lineCount++;
+    }
     chunk->code[chunk->count] = byte;
-    chunk->lines[chunk->count] = line;
     chunk->count++;
 }
 
