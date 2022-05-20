@@ -5,6 +5,12 @@
 
 typedef double Value;
 
+typedef enum {
+    VAL_BOOL,
+    VAL_NIL,
+    VAR_NUMBER
+} ValueType;
+
 typedef struct {
     int capacity;
     int count;
