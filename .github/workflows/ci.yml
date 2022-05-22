@@ -1,0 +1,23 @@
+name: lox-interpreter-ci
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: building application
+      run: |
+        mkdir build
+        cd build
+        cmake ..
+        make
+        cd ..
+        rm -r build
