@@ -3,7 +3,7 @@
 # $ cmake --version
 cmake_minimum_required(VERSION 3.5)
 
-# set the c++ version
+# set the c version
 set(CMAKE_C_STANDARD 99)
 # Set the project name
 project (crafting-interpreters)
@@ -11,7 +11,7 @@ project (crafting-interpreters)
 add_compile_options(-g)
 
 # include_directories("include")
-file(GLOB SOURCES "*.cpp")
+file(GLOB SOURCES "*.c")
 
 # Add an executable
 add_executable(interpreter ${SOURCES})

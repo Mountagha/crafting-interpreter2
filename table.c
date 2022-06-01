@@ -38,9 +38,10 @@ static Entry* findEntry(Entry* entries, int capacity, ObjString* key) {
             // We found the key.
             return entry;
         }
+        
+        index = (index + 1) % capacity;
     }
 
-    index = (index + 1) % capacity;
 }
 
 bool tableGet(Table* table, ObjString* key, Value* value) {
