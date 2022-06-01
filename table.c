@@ -50,7 +50,7 @@ bool tableGet(Table* table, ObjString* key, Value* value) {
     if (entry->key == NULL) return false;
 
     *value = entry->value;
-    return false;
+    return true;
 }
 
 static void adjustCapacity(Table* table, int capacity) {

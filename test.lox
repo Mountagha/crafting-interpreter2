@@ -1,1 +1,5 @@
 print 1 + 1;
+var a = "mountagha";
+print "Bonjour " + a;
+var c = "bah";
+print a + c;
