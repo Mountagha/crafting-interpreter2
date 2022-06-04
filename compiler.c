@@ -224,7 +224,7 @@ static void markInitialized() {
 
 static void defineVariable(uint8_t global) {
     if (current->scopeDepth > 0) {
-        markInitilialized();
+        markInitialized();
         return;
     }
 
