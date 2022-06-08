@@ -1,5 +1,8 @@
 print 1 + 1;
 var a = "mountagha";
 print "Bonjour " + a;
-var c = "bah";
+var c = " bah";
 print a + c;
+
+var x = 7;
+if (x > 5) print "ok we in business";
