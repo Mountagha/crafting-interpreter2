@@ -4,5 +4,29 @@ print "Bonjour " + a;
 var c = " bah";
 print a + c;
 
+// if branch
 var x = 7;
-if (x > 5) print "ok we in business";
+if (x > 5) print "ok we in business.";
+ 
+// else branch
+if (x < 5) print "Still got some work to do.";
+else print "We are in business here to.";
+
+// logical operator
+print false and 1; // Expect false. short circuit
+if (x > 5 and x < 10) print "we okay with and.";
+
+print false or 1; // expect 1.
+if (x == 2 or x < 10) print "we okay with or.";
+
+// while statement
+while (x <= 10) {
+    print x;
+    x = x + 1;
+}
+
+// for loops
+for (var a = 0; a < 3; a = a + 1) {
+    print a;
+}
+

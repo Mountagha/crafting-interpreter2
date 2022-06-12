@@ -258,7 +258,7 @@ static void binary(bool canAssign) {
         case TOKEN_EQUAL_EQUAL: emitByte(OP_EQUAL); break;
         case TOKEN_GREATER_EQUAL: emitBytes(OP_LESS, OP_NOT); break;
         case TOKEN_LESS: emitByte(OP_LESS); break;
-        case TOKEN_LESS_EQUAL: emitBytes(OP_GREATER, OP_NOT);
+        case TOKEN_LESS_EQUAL: emitBytes(OP_GREATER, OP_NOT); break;
         case TOKEN_GREATER: emitByte(OP_GREATER); break;
         case TOKEN_PLUS:    emitByte(OP_ADD); break;
         case TOKEN_MINUS:   emitByte(OP_SUBSTRACT); break;
@@ -299,7 +299,7 @@ static void emitConstant(Value value) {
 
 static void patchJump(int offset) {
     // -2 to adjus for the bytecode for the jump offset itself.
-    int jump = currentChunk()->count - 2;
+    int jump = currentChunk()->count - offset - 2;
 
     if (jump > UINT16_MAX) {
         error("To much code to jump over.");
@@ -404,7 +404,7 @@ ParseRule rules[] = {
     [TOKEN_IDENTIFIER]      =   {variable, NULL, PREC_NONE},
     [TOKEN_STRING]          =   {string, NULL, PREC_NONE},
     [TOKEN_NUMBER]          =   {number, NULL, PREC_NONE},
-    [TOKEN_AND]             =   {NULL, and_, PREC_NONE},
+    [TOKEN_AND]             =   {NULL, and_, PREC_AND},
     [TOKEN_CLASS]           =   {NULL, NULL, PREC_NONE},
     [TOKEN_ELSE]            =   {NULL, NULL, PREC_NONE},
     [TOKEN_FALSE]           =   {literal, NULL, PREC_NONE},
@@ -412,7 +412,7 @@ ParseRule rules[] = {
     [TOKEN_FUN]             =   {NULL, NULL, PREC_NONE},
     [TOKEN_IF]              =   {NULL, NULL, PREC_NONE},
     [TOKEN_NIL]             =   {literal, NULL, PREC_NONE},
-    [TOKEN_OR]              =   {NULL, or_, PREC_NONE},
+    [TOKEN_OR]              =   {NULL, or_, PREC_OR},
     [TOKEN_PRINT]           =   {NULL, NULL, PREC_NONE},
     [TOKEN_RETURN]          =   {NULL, NULL, PREC_NONE},
     [TOKEN_SUPER]           =   {NULL, NULL, PREC_NONE},
