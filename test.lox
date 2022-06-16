@@ -30,3 +30,18 @@ for (var a = 0; a < 3; a = a + 1) {
     print a;
 }
 
+// function 
+fun areWeHavingItYet() {
+    print "Yes We are!";
+}
+
+print areWeHavingItYet;
+
+// stack trace debugging print
+fun a() { b(); }
+fun b() { c(); }
+fun c {
+    c("to", "many");
+}
+a();
+

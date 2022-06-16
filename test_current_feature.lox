@@ -1,5 +1,7 @@
-fun areWeHavingItYet() {
-    print "Yes We are!";
+// stack trace debugging print
+fun a() { b(); }
+fun b() { c(); }
+fun c() {
+    c("to", "many");
 }
-
-print areWeHavingItYet;
+a();
