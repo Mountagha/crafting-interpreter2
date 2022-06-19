@@ -40,7 +40,7 @@ print areWeHavingItYet;
 // stack trace debugging print
 fun a() { b(); }
 fun b() { c(); }
-fun c {
+fun c() {
     c("to", "many"); // expect to throw arguments count error and overflow.
 }
 //a();
@@ -55,7 +55,7 @@ print fib(5);
 print clock() - start;
 
 // closures
-var x = "global"'
+var x = "global";
 fun outer() {
     var x = "outer";
     fun inner() {
