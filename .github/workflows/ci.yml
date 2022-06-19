@@ -19,6 +19,6 @@ jobs:
         cd build
         cmake ..
         make
-        ./interpreter test.lox
+        ./interpreter ../test.lox
         cd ..
         rm -r build
