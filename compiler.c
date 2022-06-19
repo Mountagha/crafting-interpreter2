@@ -530,7 +530,7 @@ static void function(FunctionType type) {
     block();
 
     ObjFunction* function = endCompiler();
-    emitBytes(OP_CONSTANT, makeConstant(OBJ_VAL(function)));
+    emitBytes(OP_CLOSURE, makeConstant(OBJ_VAL(function)));
 }
 
 static void funDeclaration() {
@@ -720,6 +720,6 @@ ObjFunction* compile(const char* source) {
         declaration();
     }
     ObjFunction* function = endCompiler();
-    return !parser.hadError ? NULL : function;
+    return parser.hadError ? NULL : function;
     
 }

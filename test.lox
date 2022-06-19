@@ -41,7 +41,27 @@ print areWeHavingItYet;
 fun a() { b(); }
 fun b() { c(); }
 fun c {
-    c("to", "many");
+    c("to", "many"); // expect to throw arguments count error and overflow.
 }
-a();
+//a();
+// testing recursive and stress testing the language
+fun fib(n) {
+    if (n < 2) return n;
+    return fib(n - 2) + fib(n - 1);
+}
+
+var start = clock();
+print fib(5);
+print clock() - start;
+
+// closures
+var x = "global"'
+fun outer() {
+    var x = "outer";
+    fun inner() {
+        print x;
+    }
+    inner();
+}
+outer();
 
