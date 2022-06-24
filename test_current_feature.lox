@@ -1,18 +1,9 @@
-// stack trace debugging print
-fun a() { b(); }
-fun b() { c(); }
-fun c() {
-    //c("to", "many"); // expect to throw error for argument count.
-    //c(); // overflow due to not ending recursive
-    print "We in business";
-}
-//a(); 
-
-fun fib(n) {
-    if (n < 2) return n;
-    return fib(n - 2) + fib(n - 1);
+fun outer() {
+    var x = "outside";
+    fun inner() {
+        print x;
+    }
+    inner();
 }
 
-var start = clock();
-print fib(5);
-print clock() - start;
+outer();
