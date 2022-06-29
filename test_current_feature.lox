@@ -6,4 +6,4 @@ fun outer() {
     inner();
 }
 
-//outer();
+outer();

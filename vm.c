@@ -329,7 +329,7 @@ static InterpretResult run() {
                         closure->upvalues[i] = 
                             captureUpvalue(frame->slots + index);
                     } else {
-                        closure->upvalues[i] = frame->closure->upvalues[i];
+                        closure->upvalues[i] = frame->closure->upvalues[index];
                     }
                 }
                 break;
