@@ -1,18 +1,10 @@
-fun outer() {
-    var x = "value";
-    fun middle() {
-        fun inner() {
-            print x;
-        }
-        print "Create inner closure";
-        return inner;
-    }
+// simple class test
+class Brioche {}
+print Brioche();
 
-    print "return from outer";
-    return middle;
-
-}
-
-var mid = outer();
-var in = mid();
-in();
+// testing class states
+class Pair {}
+var pair = Pair();
+pair.first = 1;
+pair.second = 2;
+print pair.first + pair.second; // 3
