@@ -98,8 +98,13 @@ var in = mid();
 in();
 
 // simple class test
-class Brioche {}
+class Brioche {
+    bake() {
+        print "baking";
+    }
+}
 print Brioche();
+Brioche().bake();
 
 // testing class states
 class Pair {}
