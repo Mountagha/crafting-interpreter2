@@ -425,7 +425,7 @@ static InterpretResult run() {
                 ObjString* method = READ_STRING();
                 int argCount = READ_BYTE();
                 if (!invoke(method, argCount)) {
-                    return INTERPRET_RUNTIME_ERROR
+                    return INTERPRET_RUNTIME_ERROR;
                 }
                 frame = &vm.frames[vm.frameCount - 1];
                 break;
