@@ -6,6 +6,12 @@
 typedef struct Obj Obj;
 typedef struct ObjString ObjString;
 
+#ifdef NAN_BOXING 
+
+typedef uint64_t Value;
+
+#else 
+
 typedef enum {
     VAL_BOOL,
     VAL_NIL,
@@ -36,6 +42,7 @@ typedef struct {
 #define NUMBER_VAL(value)   ((Value){VAL_NUMBER, {.number = value}})
 #define OBJ_VAL(object)     ((Value){VAL_OBJ, {.obj = (Obj*)object}})
 
+#endif
 
 typedef struct {
     int capacity;
