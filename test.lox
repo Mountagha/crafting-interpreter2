@@ -190,3 +190,7 @@ class Cruller < Doughnut {
 var method = Cruller().cook;
 method();
 Cruller().cook();
+
+// be sure we correctly implement IEEE 754 numbers after optimization
+var nan = 0/0;
+print nan == nan; // should print false.
