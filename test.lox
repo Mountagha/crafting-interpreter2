@@ -1,0 +1,196 @@
+print 1 + 1;
+var a = "mountagha";
+print "Bonjour " + a;
+var c = " bah";
+print a + c;
+
+// if branch
+var x = 7;
+if (x > 5) print "ok we in business.";
+ 
+// else branch
+if (x < 5) print "Still got some work to do.";
+else print "We are in business here to.";
+
+// logical operator
+print false and 1; // Expect false. short circuit
+if (x > 5 and x < 10) print "we okay with and.";
+
+print false or 1; // expect 1.
+if (x == 2 or x < 10) print "we okay with or.";
+
+// while statement
+while (x <= 10) {
+    print x;
+    x = x + 1;
+}
+
+// for loops
+for (var a = 0; a < 3; a = a + 1) {
+    print a;
+}
+
+// function 
+fun areWeHavingItYet() {
+    print "Yes We are!";
+}
+
+print areWeHavingItYet;
+
+// stack trace debugging print
+fun a() { b(); }
+fun b() { c(); }
+fun c() {
+    c("to", "many"); // expect to throw arguments count error and overflow.
+}
+//a();
+// testing recursive and stress testing the language
+fun fib(n) {
+    if (n < 2) return n;
+    return fib(n - 2) + fib(n - 1);
+}
+
+var start = clock();
+print fib(5);
+print clock() - start;
+
+// closures
+var x = "global";
+fun outer() {
+    var x = "outer";
+    fun inner() {
+        print x;
+    }
+    inner();
+}
+outer();
+
+fun outer() {
+    var a = 1;
+    var b = 2;
+    fun middle() {
+        var c = 3;
+        var d = 4;
+        fun inner() {
+            print a + c + b + d;
+        }
+    }
+}
+
+// testing closed up values with closures
+fun outer() {
+    var x = "value";
+    fun middle() {
+        fun inner() {
+            print x;
+        }
+        print "Create inner closure";
+        return inner;
+    }
+
+    print "return from outer";
+    return middle;
+
+}
+
+var mid = outer();
+var in = mid();
+in();
+
+// simple class test
+class Brioche {
+    bake() {
+        print "baking";
+    }
+}
+print Brioche();
+Brioche().bake();
+
+// testing class states
+class Pair {}
+var pair = Pair();
+pair.first = 1;
+pair.second = 2;
+print pair.first + pair.second; // 3
+
+// testing method
+class Scone {
+    topping(first, second) {
+        print "scone with " + first + " and " + second;
+    }
+}
+
+var scone = Scone();
+scone.topping("berries", "cream");
+
+// Testing 'this' support in classes
+class Scone {
+    topping() {
+        print "scone with " + this.first + " and " + this.second;
+    }
+}
+
+var scone = Scone();
+scone.first = "berries";
+scone.second = "cream";
+scone.topping();
+
+// Testing instance initializers.
+class CoffeeMaker {
+  init(coffee) {
+    this.coffee = coffee;
+  }
+
+  brew() {
+    print "Enjoy your cup of " + this.coffee;
+
+    // No reusing the grounds!
+    this.coffee = nil;
+  }
+}
+
+var maker = CoffeeMaker("coffee and chicory");
+maker.brew();
+
+
+//testing inheritance
+class A {
+  method() {
+    print "A method";
+  }
+}
+
+class B < A {
+  method() {
+    print "B method";
+  }
+
+  test() {
+    super.method();
+  }
+}
+
+class C < B {}
+
+C().test();
+
+// inheritance
+class Doughnut {
+  cook() {
+    print "Dunk in the fryer.";
+  }
+}
+
+class Cruller < Doughnut {
+  finish() {
+    print "Glaze with icing.";
+  }
+}
+
+var method = Cruller().cook;
+method();
+Cruller().cook();
+
+// be sure we correctly implement IEEE 754 numbers after optimization
+var nan = 0/0;
+print nan == nan; // should print false.

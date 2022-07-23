@@ -1,0 +1,25 @@
+name: lox-interpreter-ci
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    if: contains(github.event.head_commit.message, 'To build')
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: building application
+      run: |
+        mkdir build
+        cd build
+        cmake ..
+        make
+        ./interpreter ../test.lox
+        cd ..
+        rm -r build
