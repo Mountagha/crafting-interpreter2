@@ -71,7 +71,17 @@ static Token errorToken(const char* message) {
     return token;
 }
 
-static void skipWhitespace() {
+static Token noneToken() {
+    Token token;
+    token.type = TOKEN_NONE;
+    token.start = NULL;
+    token.length = 0;
+    token.line = -1;
+    return token;
+}
+
+
+static Token skipWhitespace() {
     for (;;) {
         char c = peek();
         switch(c) {
@@ -88,12 +98,34 @@ static void skipWhitespace() {
                 if (peekNext() == '/') {
                     // A comment goes until the end of the line.
                     while (peek() != '\n' && !isAtEnd()) advance();
+                } else if(peekNext() == '*') {
+                    // A multiline comments go until it's encouter another */ chars
+                    // Note that there can be inner comments and the depth is arbitrary.
+                    int balanced = 0;
+                    do {
+                        if (peek() == '\n') {
+                            scanner.line++;
+                        } else if (peek() == '/' && peekNext() == '*') {
+                            balanced++;
+                            advance();
+                        } else if(peek() == '*' && peekNext() == '/'){
+                            balanced--;
+                            advance();
+                        }
+                        advance();
+                    } while(balanced && !isAtEnd());
+
+                    if (balanced != 0) {
+                        return errorToken("Unterminated comment.");
+                    } else {
+                        return noneToken();
+                    }
                 } else {
-                    return;
+                    return noneToken();
                 }
                 break;
             default:
-                return;
+                return noneToken();
         }
     }
 }
@@ -173,7 +205,8 @@ static Token string() {
 }
 
 Token scanToken() {
-    skipWhitespace();
+    Token tok = skipWhitespace();
+    if (tok.type != TOKEN_NONE) return tok;
     scanner.start = scanner.current;
 
     if (isAtEnd()) return makeToken(TOKEN_EOF);
