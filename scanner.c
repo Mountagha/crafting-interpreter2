@@ -101,6 +101,7 @@ static Token skipWhitespace() {
                 } else if(peekNext() == '*') {
                     // A multiline comments go until it's encouter another */ chars
                     bool isOpen = true;
+                    advance(); advance(); // consume the '/*' so that we won't be fooled by '/*/'
                     while (isOpen && !isAtEnd()) {
                         if (peek() == '\n') {
                             scanner.line++;
