@@ -100,28 +100,27 @@ static Token skipWhitespace() {
                     while (peek() != '\n' && !isAtEnd()) advance();
                 } else if(peekNext() == '*') {
                     // A multiline comments go until it's encouter another */ chars
-                    // Note that there can be inner comments and the depth is arbitrary.
-                    int balanced = 0;
-                    do {
+                    bool isOpen = true;
+                    while (isOpen && !isAtEnd()) {
                         if (peek() == '\n') {
                             scanner.line++;
-                        } else if (peek() == '/' && peekNext() == '*') {
-                            balanced++;
-                            advance();
                         } else if(peek() == '*' && peekNext() == '/'){
-                            balanced--;
+                            isOpen = false;
                             advance();
                         }
                         advance();
-                    } while(balanced && !isAtEnd());
-
-                    if (balanced != 0) {
+                    } 
+                    /* 
+                        The way skipWhiteSpace is implemented is that it is called
+                        once to discard all whitescapes with no return, hence I can't
+                        return a meaningful error message saying 'unterminated string for 
+                        example. To circumvent this I introduce a Token TOKEN_NONE which
+                        will be returned if all whiteSpaces are discarded or a TOKEN_ERROR
+                        if the multiline comment are unterminated.
+                     */
+                    if (isOpen) {
                         return errorToken("Unterminated comment.");
-                    } else {
-                        return noneToken();
                     }
-                } else {
-                    return noneToken();
                 }
                 break;
             default:
