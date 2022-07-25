@@ -121,6 +121,8 @@ static Token skipWhitespace() {
                     if (isOpen) {
                         return errorToken("Unterminated comment.");
                     }
+                } else {
+                    return noneToken();
                 }
                 break;
             default:
