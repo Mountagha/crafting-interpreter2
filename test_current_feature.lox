@@ -1,2 +1,9 @@
-var nan = 0/0;
-print nan == nan;
+/* testing C-like comments */ 
+// this old one should also work
+/* multilines
+   are also 
+   supposed to work.
+*/
+
+
+// also test

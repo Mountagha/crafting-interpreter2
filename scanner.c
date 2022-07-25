@@ -71,7 +71,17 @@ static Token errorToken(const char* message) {
     return token;
 }
 
-static void skipWhitespace() {
+static Token noneToken() {
+    Token token;
+    token.type = TOKEN_NONE;
+    token.start = NULL;
+    token.length = 0;
+    token.line = -1;
+    return token;
+}
+
+
+static Token skipWhitespace() {
     for (;;) {
         char c = peek();
         switch(c) {
@@ -88,12 +98,35 @@ static void skipWhitespace() {
                 if (peekNext() == '/') {
                     // A comment goes until the end of the line.
                     while (peek() != '\n' && !isAtEnd()) advance();
+                } else if(peekNext() == '*') {
+                    // A multiline comments go until it's encouter another */ chars
+                    bool isOpen = true;
+                    while (isOpen && !isAtEnd()) {
+                        if (peek() == '\n') {
+                            scanner.line++;
+                        } else if(peek() == '*' && peekNext() == '/'){
+                            isOpen = false;
+                            advance();
+                        }
+                        advance();
+                    } 
+                    /* 
+                        The way skipWhiteSpace is implemented is that it is called
+                        once to discard all whitescapes with no return, hence I can't
+                        return a meaningful error message saying 'unterminated string for 
+                        example. To circumvent this I introduce a Token TOKEN_NONE which
+                        will be returned if all whiteSpaces are discarded or a TOKEN_ERROR
+                        if the multiline comment are unterminated.
+                     */
+                    if (isOpen) {
+                        return errorToken("Unterminated comment.");
+                    }
                 } else {
-                    return;
+                    return noneToken();
                 }
                 break;
             default:
-                return;
+                return noneToken();
         }
     }
 }
@@ -173,7 +206,8 @@ static Token string() {
 }
 
 Token scanToken() {
-    skipWhitespace();
+    Token tok = skipWhitespace();
+    if (tok.type != TOKEN_NONE) return tok;
     scanner.start = scanner.current;
 
     if (isAtEnd()) return makeToken(TOKEN_EOF);
