@@ -22,6 +22,8 @@ void freeChunk(Chunk* chunk) {
 }
 
 static int isLineAdded(Chunk *code, int line) {
+    //code->lines is an array of {number_occurence}{line_number}
+    // hence the double increment to jump only through lines number.
     for (int i = 0; i<code->lineCount; i += 2) {
         if (code->lines[i] == line) return i;
     }
@@ -30,6 +32,9 @@ static int isLineAdded(Chunk *code, int line) {
 
 
 void writeChunk(Chunk* chunk, uint8_t byte, int line) {
+    // the code array and the lines array are grown differently
+    // and the line array use the run-length encoding to avoid
+    // wasting memory.
     if (chunk->capacity < chunk->count + 1) {
         int oldCapacity = chunk->capacity;
         chunk->capacity = GROW_CAPACITY(oldCapacity);
@@ -46,15 +51,16 @@ void writeChunk(Chunk* chunk, uint8_t byte, int line) {
 
     int position = 0;
     if ((position = isLineAdded(chunk, line)) != -1) {
+        // still same line ? increment the occurence
         chunk->lines[position+1]++;
     } else {
-        chunk->lines[chunk->lineCount] = line;
-        chunk->lineCount++;
-        chunk->lines[chunk->lineCount] = 1; // first occurence.
-        chunk->lineCount++;
+        chunk->lines[chunk->lineCount++] = line;
+        //chunk->lineCount++;
+        chunk->lines[chunk->lineCount++] = 1; // first occurence.
+        //chunk->lineCount++;
     }
-    chunk->code[chunk->count] = byte;
-    chunk->count++;
+    chunk->code[chunk->count++] = byte;
+    //chunk->count++;
 }
 
 int addConstant(Chunk* chunk, Value value) {
