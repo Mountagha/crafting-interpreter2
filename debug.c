@@ -20,6 +20,18 @@ static int constantInstruction(const char* name, Chunk* chunk, int offset) {
     return offset + 2;
 }
 
+static int constantLongInstruction(const char* name, Chunk* chunk, int offset) {
+    uint8_t byte1 = chunk->code[offset+1];
+    uint8_t byte2 = chunk->code[offset+2];
+    uint8_t byte3 = chunk->code[offset+3];
+    printf("%-16s %4d %4d %4d'", name, byte1, byte2, byte3);
+    int constant = 0; // reconstruct the constant index from the bytes
+    constant = (byte1 << 8) + (byte2 << 16) + (byte3 << 24);
+    printValue(chunk->constants.values[constant]);
+    printf("'\n");
+    return offset + 2;
+}
+
 static int invokeInstruction(const char* name, Chunk* chunk, int offset) {
     uint8_t constant = chunk->code[offset + 1];
     uint8_t argCount = chunk->code[offset + 2];

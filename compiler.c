@@ -403,7 +403,8 @@ static uint8_t makeConstant(Value value) {
 }
 
 static void emitConstant(Value value) {
-    emitBytes(OP_CONSTANT, makeConstant(value));
+    //emitBytes(OP_CONSTANT, makeConstant(value));
+    writeConstant(currentChunk(), value, currentChunk()->lineCount);
 }
 
 static void patchJump(int offset) {

@@ -55,12 +55,34 @@ void writeChunk(Chunk* chunk, uint8_t byte, int line) {
         chunk->lines[position+1]++;
     } else {
         chunk->lines[chunk->lineCount++] = line;
-        //chunk->lineCount++;
         chunk->lines[chunk->lineCount++] = 1; // first occurence.
-        //chunk->lineCount++;
     }
     chunk->code[chunk->count++] = byte;
-    //chunk->count++;
+}
+
+void writeConstant(Chunk* chunk, Value value, int line) {
+    push(value);
+    writeValueArray(&chunk->constants, value);
+    pop(value);
+    if (chunk->constants.count <= UINT8_MAX) {
+        writeChunk(chunk, OP_CONSTANT, line);
+    } else {
+        int index = chunk->constants.count - 1;
+        // write an OP_CONSTANT_LONG.
+        // we only getting most right 3 bytes of the count as we consider
+        // these 3 are enough to encode all the constants index we would need.
+        // the index is byte1.byte2.byte3.byte4.
+        uint8_t byte2, byte3, byte4;
+        byte2 = (index >> 16) & 0xff;
+        byte3 = (index >> 8) & 0xff;
+        byte4 = index && 0xff;
+
+        writeChunk(chunk, OP_CONSTANT_LONG, line);
+        writeChunk(chunk, byte2, line);
+        writeChunk(chunk, byte3, line);
+        writeChunk(chunk, byte4, line);
+    }
+
 }
 
 int addConstant(Chunk* chunk, Value value) {
