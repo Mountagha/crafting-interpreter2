@@ -29,7 +29,7 @@ static int constantLongInstruction(const char* name, Chunk* chunk, int offset) {
     constant = (byte1 << 8) + (byte2 << 16) + (byte3 << 24);
     printValue(chunk->constants.values[constant]);
     printf("'\n");
-    return offset + 2;
+    return offset + 4;
 }
 
 static int invokeInstruction(const char* name, Chunk* chunk, int offset) {
