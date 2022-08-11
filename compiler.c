@@ -408,7 +408,7 @@ static void emitConstant(Value value) {
 }
 
 static void patchJump(int offset) {
-    // -2 to adjus for the bytecode for the jump offset itself.
+    // -2 to adjust for the bytecode for the jump offset itself.
     int jump = currentChunk()->count - offset - 2;
 
     if (jump > UINT16_MAX) {
