@@ -53,7 +53,8 @@ typedef struct {
     int lineCapacity;
     uint8_t* code;
     int* lines;
-    ValueArray constants; 
+    ValueArray constants;
+    ValueArray constantsOp; // for constants from op_constant & op_constant_long ONLY. 
 } Chunk;
 
 void initChunk(Chunk* chunk);

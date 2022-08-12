@@ -273,7 +273,8 @@ static InterpretResult run() {
         uint8_t instruction;
         switch (instruction = READ_BYTE()){
             case OP_CONSTANT: {
-                Value constant = READ_CONSTANT();
+                //Value constant = READ_CONSTANT();
+                Value constant = frame->closure->function->chunk.constantsOp.values[READ_BYTE()];
                 push(constant);
                 break;
             }
@@ -282,7 +283,7 @@ static InterpretResult run() {
                 uint8_t b2 = READ_BYTE();
                 uint8_t b3 = READ_BYTE();
                 int index = (b1 << 16) + (b2 << 8) + b3;
-                Value constant = frame->closure->function->chunk.constants.values[index];
+                Value constant = frame->closure->function->chunk.constantsOp.values[index];
                 push(constant);
                 break;
             }

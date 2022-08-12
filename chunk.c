@@ -12,12 +12,14 @@ void initChunk(Chunk* chunk) {
     chunk->code = NULL;
     chunk->lines = NULL;
     initValueArray(&chunk->constants);
+    initValueArray(&chunk->constantsOp);
 }
 
 void freeChunk(Chunk* chunk) {
     FREE_ARRAY(uint8_t, chunk->code, chunk->capacity);
     FREE_ARRAY(int, chunk->lines, chunk->lineCapacity);
     freeValueArray(&chunk->constants);
+    freeValueArray(&chunk->constantsOp);
     initChunk(chunk);
 }
 
@@ -62,13 +64,13 @@ void writeChunk(Chunk* chunk, uint8_t byte, int line) {
 
 void writeConstant(Chunk* chunk, Value value, int line) {
     push(value);
-    writeValueArray(&chunk->constants, value);
+    writeValueArray(&chunk->constantsOp, value);
     pop(value);
-    if (chunk->constants.count <= 2) {
+    if (chunk->constantsOp.count <= UINT8_MAX) {
         writeChunk(chunk, OP_CONSTANT, line);
-        writeChunk(chunk, chunk->constants.count - 1, line);
+        writeChunk(chunk, chunk->constantsOp.count - 1, line);
     } else {
-        int index = chunk->constants.count - 1;
+        int index = chunk->constantsOp.count - 1;
         // write an OP_CONSTANT_LONG.
         // we only getting most right 3 bytes of the count as we consider
         // these 3 are enough to encode all the constants index we would need.
