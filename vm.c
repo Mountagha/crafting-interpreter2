@@ -281,7 +281,7 @@ static InterpretResult run() {
                 uint8_t b1 = READ_BYTE();
                 uint8_t b2 = READ_BYTE();
                 uint8_t b3 = READ_BYTE();
-                int index = (b1 << 8) + (b2 << 16) + (b3 << 24);
+                int index = (b1 << 16) + (b2 << 8) + b3;
                 Value constant = frame->closure->function->chunk.constants.values[index];
                 push(constant);
                 break;

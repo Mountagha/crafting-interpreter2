@@ -404,7 +404,7 @@ static uint8_t makeConstant(Value value) {
 
 static void emitConstant(Value value) {
     // emitBytes(OP_CONSTANT, makeConstant(value));
-    writeConstant(currentChunk(), value, currentChunk()->lineCount);
+    writeConstant(currentChunk(), value, parser.previous.line);
 }
 
 static void patchJump(int offset) {
@@ -656,7 +656,9 @@ static void function(FunctionType type) {
     block();
 
     ObjFunction* function = endCompiler();
-    emitBytes(OP_CLOSURE, makeConstant(OBJ_VAL(function)));
+    //emitBytes(OP_CLOSURE, makeConstant(OBJ_VAL(function)));
+    //emitByte(OP_CLOSURE);
+    //writeConstant(currentChunk(), OBJ_VAL(function), parser.previous.line);
 
     for (int i = 0; i < function->upvalueCount; i++ ) {
         emitByte(compiler.upvalues[i].isLocal ? 1 : 0);

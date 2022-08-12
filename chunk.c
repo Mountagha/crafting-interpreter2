@@ -64,8 +64,9 @@ void writeConstant(Chunk* chunk, Value value, int line) {
     push(value);
     writeValueArray(&chunk->constants, value);
     pop(value);
-    if (chunk->constants.count <= UINT8_MAX) {
+    if (chunk->constants.count <= 2) {
         writeChunk(chunk, OP_CONSTANT, line);
+        writeChunk(chunk, chunk->constants.count - 1, line);
     } else {
         int index = chunk->constants.count - 1;
         // write an OP_CONSTANT_LONG.
@@ -75,7 +76,7 @@ void writeConstant(Chunk* chunk, Value value, int line) {
         uint8_t byte2, byte3, byte4;
         byte2 = (index >> 16) & 0xff;
         byte3 = (index >> 8) & 0xff;
-        byte4 = index && 0xff;
+        byte4 = index & 0xff;
 
         writeChunk(chunk, OP_CONSTANT_LONG, line);
         writeChunk(chunk, byte2, line);
