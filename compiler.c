@@ -403,11 +403,12 @@ static uint8_t makeConstant(Value value) {
 }
 
 static void emitConstant(Value value) {
-    emitBytes(OP_CONSTANT, makeConstant(value));
+    // emitBytes(OP_CONSTANT, makeConstant(value));
+    writeConstant(currentChunk(), value, parser.previous.line);
 }
 
 static void patchJump(int offset) {
-    // -2 to adjus for the bytecode for the jump offset itself.
+    // -2 to adjust for the bytecode for the jump offset itself.
     int jump = currentChunk()->count - offset - 2;
 
     if (jump > UINT16_MAX) {
