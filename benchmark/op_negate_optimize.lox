@@ -1,0 +1,4 @@
+// use sh script to script a test suite using a lot of op_negate in order 
+// to do performance testing with gprof.
+
+1 + 2 - 3
