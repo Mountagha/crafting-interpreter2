@@ -45,7 +45,16 @@ typedef enum {
     OP_RETURN,
 } OpCode;
 
-
+/* 
+    Since all constants were stuffed inside constants ValueArray, Scaling raw constants
+    would be almost impossible. Let say we want a function to have more than 255 raw constants
+    the way we define those constants is by creating variable by example i.e var x = "raw_constant";
+    but in this case x is also an identifiant and also stuffed in the same array as the raw_constant.
+    We, hence decide to create another array constantsOp which would contain all raw constants and let 
+    all other kind of constants stayed in constants array. this way we can stuff as much raw constants
+    as we want in the new Array since OP_CONSTANT_LONG come to rescousse when we go above 255 constants
+    that OP_CONSTANT supports.
+*/
 typedef struct {
     int count;
     int capacity;

@@ -280,12 +280,7 @@ static InterpretResult run() {
                 break;
             }
             case OP_CONSTANT_LONG: {
-                //uint8_t b1 = READ_BYTE();
-                //uint8_t b2 = READ_BYTE();
-                //uint8_t b3 = READ_BYTE();
-                //int index = (b1 << 16) + (b2 << 8) + b3;
-                int index = READ_3_BYTE();
-                Value constant = frame->closure->function->chunk.constantsOp.values[index];
+                Value constant = frame->closure->function->chunk.constantsOp.values[READ_3_BYTE()];
                 push(constant);
                 break;
             }
