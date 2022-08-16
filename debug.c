@@ -24,9 +24,9 @@ static int constantLongInstruction(const char* name, Chunk* chunk, int offset) {
     uint8_t byte1 = chunk->code[offset+1];
     uint8_t byte2 = chunk->code[offset+2];
     uint8_t byte3 = chunk->code[offset+3];
-    printf("%-16s %4d %2d %2d '", name, byte1, byte2, byte3);
     int constant = 0; // reconstruct the constant index from the bytes
     constant = (byte1 << 16) + (byte2 << 8) + byte3;
+    printf("%-16s %4d '", name, constant);
     printValue(chunk->constantsOp.values[constant]);
     printf("'\n");
     return offset + 4;
@@ -85,7 +85,7 @@ int disassembleInstruction(Chunk* chunk, int offset) {
             //return constantInstruction("OP_CONSTANT", chunk, offset);
             uint8_t constant = chunk->code[offset+1];
             printf("%-16s %4d '", "OP_CONSTANT", constant);
-            printValue(chunk->constants.values[constant]);
+            printValue(chunk->constantsOp.values[constant]);
             printf("'\n");
             return offset + 2;
         }

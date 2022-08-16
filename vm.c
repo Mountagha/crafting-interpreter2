@@ -244,7 +244,9 @@ static InterpretResult run() {
     CallFrame* frame = &vm.frames[vm.frameCount - 1];
 
 #define READ_BYTE() (*frame->ip++)
+#define READ_3_BYTE() ((*frame->ip++ << 16) | (*frame->ip++ << 8) | (*frame->ip++)) 
 #define READ_CONSTANT() (frame->closure->function->chunk.constants.values[READ_BYTE()])
+#define READ_CONSTANT_OP() (frame->closure->function->chunk.constantsOp.values[READ_BYTE()])
 #define READ_SHORT() (frame->ip += 2, (uint16_t)((frame->ip[-2] << 8) | frame->ip[-1]))
 #define READ_STRING() AS_STRING(READ_CONSTANT())
 #define BINARY_OP(valueType, op) \
@@ -273,16 +275,16 @@ static InterpretResult run() {
         uint8_t instruction;
         switch (instruction = READ_BYTE()){
             case OP_CONSTANT: {
-                //Value constant = READ_CONSTANT();
-                Value constant = frame->closure->function->chunk.constantsOp.values[READ_BYTE()];
+                Value constant = READ_CONSTANT_OP();
                 push(constant);
                 break;
             }
             case OP_CONSTANT_LONG: {
-                uint8_t b1 = READ_BYTE();
-                uint8_t b2 = READ_BYTE();
-                uint8_t b3 = READ_BYTE();
-                int index = (b1 << 16) + (b2 << 8) + b3;
+                //uint8_t b1 = READ_BYTE();
+                //uint8_t b2 = READ_BYTE();
+                //uint8_t b3 = READ_BYTE();
+                //int index = (b1 << 16) + (b2 << 8) + b3;
+                int index = READ_3_BYTE();
                 Value constant = frame->closure->function->chunk.constantsOp.values[index];
                 push(constant);
                 break;
