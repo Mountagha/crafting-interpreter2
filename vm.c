@@ -406,7 +406,8 @@ static InterpretResult run() {
                     runtimeError("Operand must be a number");
                     return INTERPRET_RUNTIME_ERROR;
                 }
-                push(NUMBER_VAL(-AS_NUMBER(pop())));
+                //push(NUMBER_VAL(-AS_NUMBER(pop()))); // chap 15 chall 4.
+                vm.stackTop[-1] = NUMBER_VAL(-AS_NUMBER(vm.stackTop[-1]));
                 break;
             }
             case OP_PRINT: {
