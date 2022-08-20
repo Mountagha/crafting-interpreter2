@@ -349,7 +349,8 @@ static void binary(bool canAssign) {
         case TOKEN_LESS_EQUAL: emitBytes(OP_GREATER, OP_NOT); break;
         case TOKEN_GREATER: emitByte(OP_GREATER); break;
         case TOKEN_PLUS:    emitByte(OP_ADD); break;
-        case TOKEN_MINUS:   emitByte(OP_SUBSTRACT); break;
+        case TOKEN_MINUS:   emitByte(OP_SUBSTRACT); break;    // see notes on chall_notes.txt
+        //case TOKEN_MINUS:   emitBytes(OP_NEGATE, OP_ADD); break;
         case TOKEN_STAR:    emitByte(OP_MULTIPLY); break;
         case TOKEN_SLASH:   emitByte(OP_DIVIDE); break;
         default: return;    // Unreachable.
