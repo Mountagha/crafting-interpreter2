@@ -8,3 +8,7 @@ it does not optimize execution. We kept the changement there but commented it.
 chap15-chall4
 doing the negation on place seems to save a bit of time. OP_NOT could benefit of the same 
 optimization. (notice it by observing time taken to compute fibonnacci.)
+
+chap15-chall3
+the handling of dynamic stack size is more complicated now as we have already added lot of other 
+functionality (like GC). Will come back to it later. Incha allah ;)
