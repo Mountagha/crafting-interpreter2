@@ -8,3 +8,6 @@ it does not optimize execution. We kept the changement there but commented it.
 chap15-chall4
 doing the negation on place seems to save a bit of time. OP_NOT could benefit of the same 
 optimization. (notice it by observing time taken to compute fibonnacci.)
+
+chap19-chall1:
+Flexible array members for ObjString chars members added.
