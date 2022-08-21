@@ -46,7 +46,7 @@ static int simpleInstruction(const char* name, int offset) {
     return offset + 1;
 }
 
-static int getLine(Chunk* chunk, int index) {
+int getLine(Chunk* chunk, int index) {
     int accumulator = 0;
     for (int i = 1; i < chunk->lineCount; i += 2) {
         accumulator += chunk->lines[i];
