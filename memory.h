@@ -10,6 +10,9 @@
 
 #define FREE(type, pointer) reallocate(pointer, sizeof(type), 0)
 
+// in order to be able to free a flexible array struct
+#define FREE_OBJ_STRING(type, more, pointer) reallocate(pointer, sizeof(type)+more, 0)
+
 #define GROW_CAPACITY(capacity) \
     ((capacity) < 8 ? 8 : (capacity) * 2)
 

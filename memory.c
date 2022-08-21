@@ -147,9 +147,11 @@ static void freeObject(Obj* object) {
             break;
         }
         case OBJ_STRING: {
-            ObjString* string = (ObjString *)object;
-            FREE_ARRAY(char, string->chars, string->length + 1);
-            FREE(ObjString, object);
+            //ObjString* string = (ObjString *)object;
+            //FREE_ARRAY(char, string->chars, string->length + 1);
+            // because sizeof(object) returns 0 for the flexible array member.
+            int lengthString = ((ObjString *)object)->length + 1;
+            FREE_OBJ_STRING(ObjString, lengthString, object);
             break;
         }
         case OBJ_UPVALUE: {
