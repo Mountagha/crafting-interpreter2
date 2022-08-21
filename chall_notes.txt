@@ -8,3 +8,15 @@ it does not optimize execution. We kept the changement there but commented it.
 chap15-chall4
 doing the negation on place seems to save a bit of time. OP_NOT could benefit of the same 
 optimization. (notice it by observing time taken to compute fibonnacci.)
+
+chap19-chall1:
+Flexible array members for ObjString chars members added.
+
+chap19-chall2:
+Let come back later ;)
+
+chap19-chall3:
+when trying to concatenate a string with another type we raise an error and exit as done
+in python interpreter. Other language implicitely convert the other type to string and 
+do the concatenation. We choose not to.
+

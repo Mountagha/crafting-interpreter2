@@ -6,4 +6,7 @@
 void disassembleChunk(Chunk* chunk, const char* name);
 int disassembleInstruction(Chunk* chunk, int offset);
 
+// Need this in vm.c for runtimeError function
+int getLine(Chunk* chunk, int index);
+
 #endif

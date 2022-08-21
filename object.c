@@ -10,6 +10,12 @@
 #define ALLOCATE_OBJ(type, objectType) \
     (type*) allocateObject(sizeof(type), objectType)
 
+// because sizeof(objString) returns 0 for the flexible 
+// member array chars we need to specify length explicitely
+// while allocating an ObjString.
+#define ALLOCATE_OBJ_STRING(type, more, objectType) \
+    (type*) allocateObject(sizeof(type)+more, objectType)
+
 static Obj* allocateObject(size_t size, ObjType type) {
     Obj* object = (Obj*)reallocate(NULL, 0, size);
     object->type = type;
@@ -74,9 +80,10 @@ ObjNative* newNative(NativeFn function) {
 }
 
 static ObjString* allocateString(char* chars, int length, uint32_t hash) {
-    ObjString* string = ALLOCATE_OBJ(ObjString, OBJ_STRING);
+    ObjString* string = ALLOCATE_OBJ_STRING(ObjString, length+1, OBJ_STRING);
     string->length = length;
-    string->chars = chars;
+    memcpy(string->chars, chars, length);
+    string->chars[length] = '\0';
     string->hash = hash;
     push(OBJ_VAL(string));
     tableSet(&vm.strings, string, NIL_VAL);
