@@ -1,4 +1,5 @@
 from curses.ascii import isalnum
+from token import Token
 from token_type import TokenType
 
 class Lexer: 
@@ -9,56 +10,58 @@ class Lexer:
 
     def get_token_name(self):
         identifer = ""
-        while True:
-            if self.mText[self.index] == " " or len(self.mText) == self.index - 1:
-                break
+        while self.index < len(self.mText) and isalnum(self.mText[self.index]):
             identifer += self.mText[self.index]
             self.index += 1
+        self.mPunctuators.append(Token(TokenType.NAME, identifer))
 
     def tokenize(self):
-        while True:
-            if self.index - 1 == len(self.mText):
-                break # end of file 
+        while self.index < len(self.mText):
             char = self.mText[self.index]
-            self.index += 1
             if char == '(':
-                self.mPunctuators.append((TokenType.LEFT_PAREN, char))
+                self.mPunctuators.append(Token(TokenType.LEFT_PAREN, char))
             elif char == ')':
-                self.mPunctuators.append((TokenType.RIGHT_PAREN, char))
+                self.mPunctuators.append(Token(TokenType.RIGHT_PAREN, char))
             elif char == ',':
-                self.mPunctuators.append((TokenType.COMMA, char))
+                self.mPunctuators.append(Token(TokenType.COMMA, char))
             elif char == '=':
-                self.mPunctuators.append((TokenType.ASSIGN, char)) 
+                self.mPunctuators.append(Token(TokenType.ASSIGN, char)) 
             elif char == '+':
-                self.mPunctuators.append((TokenType.PLUS, char))
+                self.mPunctuators.append(Token(TokenType.PLUS, char))
             elif char == '-':
-                self.mPunctuators.append((TokenType.MINUS, char))
+                self.mPunctuators.append(Token(TokenType.MINUS, char))
             elif char == '*':
-                self.mPunctuators.append((TokenType.ASTERIK, char))
+                self.mPunctuators.append(Token(TokenType.ASTERIK, char))
             elif char == '/':
-                self.mPunctuators.append((TokenType.SLASH, char))
+                self.mPunctuators.append(Token(TokenType.SLASH, char))
             elif char == '^':
-                self.mPunctuators.append((TokenType.CARET, char))
+                self.mPunctuators.append(Token(TokenType.CARET, char))
             elif char == '~':
-                self.mPunctuators.append((TokenType.TILDE, char))
+                self.mPunctuators.append(Token(TokenType.TILDE, char))
             elif char == '!':
-                self.mPunctuators.append((TokenType.BANG, char)) 
+                self.mPunctuators.append(Token(TokenType.BANG, char)) 
             elif char == '?':
-                self.mPunctuators.append((TokenType.QUESTION, char))
+                self.mPunctuators.append(Token(TokenType.QUESTION, char))
             elif char == ':':
-                self.mPunctuators.append((TokenType.COLON, char))
+                self.mPunctuators.append(Token(TokenType.COLON, char))
             elif isalnum(char):
                 self.get_token_name()
+                continue # to avoid double increment
             else:
+                self.index += 1
                 continue # ignore all other char
+            self.index += 1
 
-        self.mPunctuators.append((TokenType.EOF, None))
+        self.mPunctuators.append(Token(TokenType.EOF, None))
+
     def get_token(self):
         return self.mPunctuators
     
 if __name__ == "__main__":
-    source = "a = 1 + 2" 
+    source = "a(b ? c : d, e + f)"
     lexer = Lexer(source)
     lexer.tokenize()
-    print(lexer.get_token())
+    tokens = lexer.get_token()
+    for token in tokens:
+        print(token)
             
