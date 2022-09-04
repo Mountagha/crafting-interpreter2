@@ -1,35 +1,64 @@
-from enum import Enum
-from lib2to3.pgen2.token import COLON, SLASH, TILDE
-from tkinter import W
-
-class TokenType(Enum):
-    LEFT_PAREN=1,
-    RIGHT_PAREN=2,
-    COMMA=3,
-    ASSIGN=4,
-    PLUS=5,
-    MINUS=6,
-    ASTERIK=7,
-    SLASH=8,
-    CARET=9,
-    TILDE=10,
-    BANG=11,
-    QUESTION=12,
-    COLON=13,
-    NAME=14,
-    EOF=15
-
-    # If the tokenType represents a punctuator (i.e a token that can split an
-    # identifier like '+', this will get its text.)
-    
-    def punctuator(self):
-        pass
-
+from curses.ascii import isalnum
+from token_type import TokenType
 
 class Lexer: 
     def __init__(self, mText: str) -> None:
-        self.mPunctuators = {}
+        self.mPunctuators = [] # list of tuples
         self.mText = mText
-    def other(self):
-        pass
-        
+        self.index = 0 # to go through the text.
+
+    def get_token_name(self):
+        identifer = ""
+        while True:
+            if self.mText[self.index] == " " or len(self.mText) == self.index - 1:
+                break
+            identifer += self.mText[self.index]
+            self.index += 1
+
+    def tokenize(self):
+        while True:
+            if self.index - 1 == len(self.mText):
+                break # end of file 
+            char = self.mText[self.index]
+            self.index += 1
+            if char == '(':
+                self.mPunctuators.append((TokenType.LEFT_PAREN, char))
+            elif char == ')':
+                self.mPunctuators.append((TokenType.RIGHT_PAREN, char))
+            elif char == ',':
+                self.mPunctuators.append((TokenType.COMMA, char))
+            elif char == '=':
+                self.mPunctuators.append((TokenType.ASSIGN, char)) 
+            elif char == '+':
+                self.mPunctuators.append((TokenType.PLUS, char))
+            elif char == '-':
+                self.mPunctuators.append((TokenType.MINUS, char))
+            elif char == '*':
+                self.mPunctuators.append((TokenType.ASTERIK, char))
+            elif char == '/':
+                self.mPunctuators.append((TokenType.SLASH, char))
+            elif char == '^':
+                self.mPunctuators.append((TokenType.CARET, char))
+            elif char == '~':
+                self.mPunctuators.append((TokenType.TILDE, char))
+            elif char == '!':
+                self.mPunctuators.append((TokenType.BANG, char)) 
+            elif char == '?':
+                self.mPunctuators.append((TokenType.QUESTION, char))
+            elif char == ':':
+                self.mPunctuators.append((TokenType.COLON, char))
+            elif isalnum(char):
+                self.get_token_name()
+            else:
+                continue # ignore all other char
+
+        self.mPunctuators.append((TokenType.EOF, None))
+    def get_token(self):
+        return self.mPunctuators
+    
+if __name__ == "__main__":
+    source = "a = 1 + 2" 
+    lexer = Lexer(source)
+    lexer.tokenize()
+    print(lexer.get_token())
+            
