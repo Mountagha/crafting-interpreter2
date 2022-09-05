@@ -54,7 +54,7 @@ class Lexer:
 
         self.mPunctuators.append(Token(TokenType.EOF, None))
 
-    def get_token(self):
+    def get_tokens(self):
         return self.mPunctuators
     
 if __name__ == "__main__":
