@@ -1,9 +1,11 @@
+from __future__ import annotations
+from typing import TYPE_CHECKING
 from token import Token, TokenType
-from parselets.prefix_parselet import PrefixParselet
 from expressions.expression import Expression
 from lexer import Lexer
 from typing import List, overload
-
+if TYPE_CHECKING:   # to handle circular import.
+    from parselets.prefix_parselet import PrefixParselet
 
 class Parser:
     def __init__(self, tokens: List[Token]) -> None:
@@ -12,20 +14,19 @@ class Parser:
         self.mRead = []
         self.index = 0
     
-    @overload
     def register(self, token: TokenType, parselet: PrefixParselet) -> None:
         self.mPrefixParselets[token] = parselet
 
-    @overload
-    def register(self, token: TokenType, parselet: InfixParselet) -> None:
-        pass
+    # @overload
+    # def register(self, token: TokenType, parselet: InfixParselet) -> None:
+    #    pass
     
     def parseExpression(self, precedence: int = 0) -> Expression: 
         token = self.consume()
         if token.mtype not in self.mPrefixParselets.keys(): 
             raise Exception(f"Could not parse \"{str(token)}\".")
 
-        left = self.mPrefixParselets[token.mtype](self, token)
+        left = self.mPrefixParselets[token.mtype].parse(self, token)
         return left
      
     def consume(self, expected: TokenType = None) -> Token:
