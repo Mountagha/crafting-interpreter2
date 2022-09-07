@@ -25,6 +25,6 @@ class PrefixExpression(Expression):
         self.mRight = right
     
     def __repr__(self) -> str:
-        return f"( {str(self.mOperator)} {self.mRight.__repr__} )"
+        return f"( {str(self.mOperator)} {self.mRight.__repr__()} )"
     
 
