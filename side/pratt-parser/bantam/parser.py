@@ -16,6 +16,7 @@ class Parser:
     
     def register(self, token: TokenType, parselet: PrefixParselet) -> None:
         self.mPrefixParselets[token] = parselet
+    
 
     # @overload
     # def register(self, token: TokenType, parselet: InfixParselet) -> None:

@@ -16,4 +16,10 @@ class BantamParser(Parser):
         super().register(TokenType.NAME, NameParselet())
 
         # Register the simple operator parselets
-        super().register(TokenType.BANG, PrefixOperatorParselet(1)) # testing purposes.
+        self.prefix(TokenType.PLUS)
+        self.prefix(TokenType.MINUS)
+        self.prefix(TokenType.TILDE)
+        self.prefix(TokenType.BANG)
+    
+    def prefix(self, token:TokenType):
+        super().register(token, PrefixOperatorParselet(1))
