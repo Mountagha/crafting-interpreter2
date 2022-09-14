@@ -21,6 +21,7 @@ typedef struct {
 
 typedef enum {
     PREC_NONE, 
+    PREC_TERNARY,       // ?:
     PREC_ASSIGNMENT,    // =
     PREC_OR,            // or
     PREC_AND,           // and
@@ -788,6 +789,9 @@ static void forStatement() {
         emitByte(OP_POP); // Condition.
     }
     endScope();
+}
+static void ternary() {
+    
 }
 
 static void ifStatement() {
