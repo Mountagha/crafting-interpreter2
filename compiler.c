@@ -21,8 +21,8 @@ typedef struct {
 
 typedef enum {
     PREC_NONE, 
-    PREC_TERNARY,       // ?:
     PREC_ASSIGNMENT,    // =
+    PREC_TERNARY,       // ?:
     PREC_OR,            // or
     PREC_AND,           // and
     PREC_EQUALITY,      // == !=
@@ -542,6 +542,16 @@ static void this_(bool canAssign) {
     variable(false);
 }
 
+static void ternary(bool canAssign) {
+    printf("On m'a call.");
+    TokenType operatorType = parser.previous.type;
+    ParseRule* rule = getRule(operatorType);
+    parsePrecedence((Precedence)(rule->precedence+1));
+    // expression();
+    //consume(TOKEN_COLON, "Expect ':' when parsing ternary.");
+    //expression();
+}
+
 static void unary(bool canAssign) {
     TokenType operatorType = parser.previous.type;
 
@@ -588,6 +598,7 @@ ParseRule rules[] = {
     [TOKEN_IF]              =   {NULL, NULL, PREC_NONE},
     [TOKEN_NIL]             =   {literal, NULL, PREC_NONE},
     [TOKEN_OR]              =   {NULL, or_, PREC_OR},
+    [TOKEN_QUESTION_MARK]   =   {NULL, ternary, PREC_TERNARY},
     [TOKEN_PRINT]           =   {NULL, NULL, PREC_NONE},
     [TOKEN_RETURN]          =   {NULL, NULL, PREC_NONE},
     [TOKEN_SUPER]           =   {super_, NULL, PREC_NONE},
@@ -789,9 +800,6 @@ static void forStatement() {
         emitByte(OP_POP); // Condition.
     }
     endScope();
-}
-static void ternary() {
-    
 }
 
 static void ifStatement() {
