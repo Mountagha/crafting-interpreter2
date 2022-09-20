@@ -218,6 +218,7 @@ Token scanToken() {
     if (isDigit(c)) return number();
 
     switch(c) {
+        case ':': return makeToken(TOKEN_COLON);
         case '(': return makeToken(TOKEN_LEFT_PAREN);
         case ')': return makeToken(TOKEN_RIGHT_PAREN);
         case '{': return makeToken(TOKEN_LEFT_BRACE);
@@ -227,6 +228,7 @@ Token scanToken() {
         case '.': return makeToken(TOKEN_DOT);
         case '-': return makeToken(TOKEN_MINUS);
         case '+': return makeToken(TOKEN_PLUS);
+        case '?': return makeToken(TOKEN_QUESTION_MARK);
         case '/': return makeToken(TOKEN_SLASH);
         case '*': return makeToken(TOKEN_STAR);
         case '!': 
