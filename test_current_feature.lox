@@ -1,5 +1,5 @@
-//var a = 4;
-//var b = 8;
-//var max = a > b ? a : b;
-//print max;
-(-1 + 2) * 3 - -4;
+var a = 4;
+var b = 8;
+var max = a > b ? a : b+1;
+print max;
+//print (-1 + 2) * 3 - -4;

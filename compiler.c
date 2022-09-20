@@ -543,13 +543,19 @@ static void this_(bool canAssign) {
 }
 
 static void ternary(bool canAssign) {
-    printf("On m'a call.");
-    TokenType operatorType = parser.previous.type;
-    ParseRule* rule = getRule(operatorType);
-    parsePrecedence((Precedence)(rule->precedence+1));
-    // expression();
-    //consume(TOKEN_COLON, "Expect ':' when parsing ternary.");
-    //expression();
+    // We already consumed up to the ? token
+    int thenJump = emitJump(OP_JUMP_IF_FALSE);
+    emitByte(OP_POP);
+
+    parsePrecedence(PREC_TERNARY);
+    consume(TOKEN_COLON, "Expect ':' when parsing ternary.");
+
+    int elseJump = emitJump(OP_JUMP);
+    patchJump(thenJump);
+    emitByte(OP_POP);
+
+    parsePrecedence(PREC_TERNARY);
+    patchJump(elseJump);
 }
 
 static void unary(bool canAssign) {

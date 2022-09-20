@@ -8,3 +8,6 @@ var other = a == b ? a : b;
 print max; // should print 5
 
 print other; // should print 3
+
+other = a <= b ? other + 1 : other - 1;
+print other; // should print 2
