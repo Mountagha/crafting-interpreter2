@@ -73,7 +73,7 @@ void initVM() {
 }
 
 void freeVM() {
-    freeTable(&vm.strings);
+    freeTable(&vm.globals);
     freeTable(&vm.strings);
     vm.initString = NULL;
     freeObjects();
