@@ -10,6 +10,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    
+    - name: Install valgrind
+      run: |
+        sudo apt update
+        sudo apt install valgrind
+
     - name: building application
       run: |
         mkdir build

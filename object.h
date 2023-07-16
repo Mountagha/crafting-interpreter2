@@ -61,7 +61,9 @@ struct ObjString {
     Obj obj;
     int length;
     uint32_t hash;
-    char chars[];
+    char chars[]; // The flexible array member must be the last.
+    // The compiler may reserve extra padding space here, like it can
+    // between struct members.
 };
 
 typedef struct ObjUpvalue {

@@ -82,12 +82,14 @@ ObjNative* newNative(NativeFn function) {
 static ObjString* allocateString(char* chars, int length, uint32_t hash) {
     ObjString* string = ALLOCATE_OBJ_STRING(ObjString, length+1, OBJ_STRING);
     string->length = length;
-    memcpy(string->chars, chars, length);
+    memcpy(string->chars, chars, length); // Now we are using flexible array we are copying the content
+    // of chars into our flexible chars instead of using a pointer [string->chars = chars; ]
     string->chars[length] = '\0';
     string->hash = hash;
     push(OBJ_VAL(string));
     tableSet(&vm.strings, string, NIL_VAL);
     pop();
+    free(chars);
     return string;
 }
 
