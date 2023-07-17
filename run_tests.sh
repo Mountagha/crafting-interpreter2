@@ -9,7 +9,7 @@ do
         if [[ $? == -1 ]]
         then
             exit 1
-        done
+        fi
         echo -e "\n";
     fi
 done
