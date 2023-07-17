@@ -10,7 +10,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    
+
     - name: Install valgrind
       run: |
         sudo apt update
@@ -24,5 +24,6 @@ jobs:
         make
         cd ..
         chmod +x run_tests.sh
+        set -e
         ./run_tests.sh ./build/interpreter
         rm -r build
