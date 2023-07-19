@@ -8,7 +8,7 @@ set(CMAKE_C_STANDARD 99)
 # Set the project name
 project (crafting-interpreters)
 
-add_compile_options(-g)
+add_compile_options(-g -pg -Wall)
 
 # include_directories("include")
 file(GLOB SOURCES "*.c")

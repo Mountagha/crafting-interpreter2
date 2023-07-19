@@ -69,7 +69,7 @@ static int jumpInstruction(const char* name, int sign, Chunk* chunk, int offset)
 }
 
 int disassembleInstruction(Chunk* chunk, int offset) {
-    int l1, l2;
+
     printf("%04d ", offset);
     if (offset > 0 && 
         getLine(chunk, offset) == getLine(chunk, offset - 1)) {
