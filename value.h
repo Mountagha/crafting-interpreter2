@@ -64,6 +64,7 @@ typedef struct {
         bool boolean;
         double number;
         Obj* obj;
+        char smallString[6];
     } as;
 } Value;
 
