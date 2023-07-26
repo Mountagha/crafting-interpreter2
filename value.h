@@ -69,6 +69,13 @@ typedef struct {
     } as;
 } Value;
 
+static inline Value copy_small_string(const char small_string[], int len) {
+    Value v;
+    v.type = VAL_SMALL_STRING;
+    memcpy(v.as.smallString, small_string, len);
+    return v;
+}
+
 #define IS_BOOL(value)          ((value).type == VAL_BOOL)
 #define IS_NIL(value)           ((value).type == VAL_NIL)
 #define IS_NUMBER(value)        ((value).type == VAL_NUMBER)
@@ -84,7 +91,7 @@ typedef struct {
 #define NIL_VAL                 ((Value){VAL_NIL, {.number = 0}})
 #define NUMBER_VAL(value)       ((Value){VAL_NUMBER, {.number = value}})
 #define OBJ_VAL(object)         ((Value){VAL_OBJ, {.obj = (Obj*)object}})
-#define OBJ_SMALL_STRING(value) ((Value){VAL_SMALL_STRING, {memcpy(.smallString, &value, 5)}})
+#define OBJ_SMALL_STRING(value, len) copy_small_string(value, len)
 
 #endif
 
