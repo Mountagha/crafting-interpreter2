@@ -248,6 +248,7 @@ static InterpretResult run() {
 #define READ_3_BYTE() ((*frame->ip++ << 16) | (*frame->ip++ << 8) | (*frame->ip++)) 
 #define READ_CONSTANT() (frame->closure->function->chunk.constants.values[READ_BYTE()])
 #define READ_CONSTANT_OP() (frame->closure->function->chunk.constantsOp.values[READ_BYTE()])
+#define READ_CONSTANT_OP_LONG() (frame->closure->function->chunk.constantsOp.values[READ_3_BYTE()])
 #define READ_SHORT() (frame->ip += 2, (uint16_t)((frame->ip[-2] << 8) | frame->ip[-1]))
 #define READ_STRING() AS_STRING(READ_CONSTANT())
 #define BINARY_OP(valueType, op) \
@@ -281,7 +282,7 @@ static InterpretResult run() {
                 break;
             }
             case OP_CONSTANT_LONG: {
-                Value constant = frame->closure->function->chunk.constantsOp.values[READ_3_BYTE()];
+                Value constant = READ_CONSTANT_OP_LONG();
                 push(constant);
                 break;
             }
@@ -514,8 +515,11 @@ static InterpretResult run() {
         }
     }
 #undef READ_BYTE
+#undef READ_3_BYTE
 #undef READ_SHORT
 #undef READ_CONSTANT
+#undef READ_CONSTANT_OP
+#undef READ_CONSTANT_OP_LONG
 #undef READ_STRING
 #undef BINARY_OP
 }

@@ -73,6 +73,7 @@ static inline Value copy_small_string(const char small_string[], int len) {
     Value v;
     v.type = VAL_SMALL_STRING;
     memcpy(v.as.smallString, small_string, len);
+    v.as.smallString[len] = '\0';
     return v;
 }
 
