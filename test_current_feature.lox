@@ -3,5 +3,5 @@
 //var max = a > b ? a : b+1;
 //print max;
 //print (-1 + 2) * 3 - -4;
-var a = "Mountagha";
+var a = "Mo";
 print a;

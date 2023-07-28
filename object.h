@@ -15,6 +15,7 @@
 #define IS_INSTANCE(value)      isObjType(value, OBJ_INSTANCE)
 #define IS_NATIVE(value)        isObjType(value, OBJ_NATIVE)
 #define IS_STRING(value)        isObjType(value, OBJ_STRING)
+#define IS_SMALL_STRING(value)  isObjType(value, OBJ_SMALL_STRING)
 
 #define AS_BOUND_METHOD(value)  ((ObjBoundMethod*)AS_OBJ(value))
 #define AS_CLASS(value)         ((ObjClass*)AS_OBJ(value))
@@ -24,6 +25,7 @@
 #define AS_NATIVE(value)        (((ObjNative *)AS_OBJ(value))->function)
 #define AS_STRING(value)        ((ObjString *)AS_OBJ(value))
 #define AS_CSTRING(value)       (((ObjString *)AS_OBJ(value))->chars)
+#define AS_SMALL_STRING(value)  ()
 
 typedef enum {
     OBJ_BOUND_METHOD,
@@ -33,6 +35,7 @@ typedef enum {
     OBJ_INSTANCE,
     OBJ_NATIVE,
     OBJ_STRING,
+    OBJ_SMALL_STRING,
     OBJ_UPVALUE,
 } ObjType;
 

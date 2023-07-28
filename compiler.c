@@ -472,13 +472,15 @@ static void or_(bool canAssign) {
 }
 
 static void string(bool canAssign) {
-    if (parser.previous.length < 5) {
-        const char theString[5];
-        memcpy(theString, parser.previous.start+1, parser.previous.length-2);
-        emitConstant(OBJ_SMALL_STRING(theString, parser.previous.length-2)); 
+    int len = parser.previous.length;
+    if (len < 5) {
+        char theString[5];
+        memcpy(theString, parser.previous.start+1, len-2); // -1 for the 0 indexing -2 for the " at the end.
+        theString[len-2] = '\0';
+        emitConstant(OBJ_SMALL_STRING(theString, len-2)); 
         return;
     }
-    emitConstant(OBJ_VAL(copyString(parser.previous.start+1, parser.previous.length-2)));
+    emitConstant(OBJ_VAL(copyString(parser.previous.start+1, len-2)));
 }
 
 static void namedVariable(Token name, bool canAssign) {
