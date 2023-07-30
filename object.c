@@ -173,9 +173,6 @@ void printObject(Value value) {
             printf("%s", AS_CSTRING(value));
             break;
         }
-        case OBJ_SMALL_STRING: {
-            printf("%s", AS_SMALL_STRING(value));
-        }
         case OBJ_UPVALUE: {
             printf("upvalue");
             break;

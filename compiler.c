@@ -473,11 +473,11 @@ static void or_(bool canAssign) {
 
 static void string(bool canAssign) {
     int len = parser.previous.length;
-    if (len < 5) {
+    if (len + 1 < MAX_LEN_SMALL_STRING) {
         char theString[5];
         memcpy(theString, parser.previous.start+1, len-2); // -1 for the 0 indexing -2 for the " at the end.
         theString[len-2] = '\0';
-        emitConstant(OBJ_SMALL_STRING(theString, len-2)); 
+        emitConstant(SMALL_STRING_VAL(theString, len-2)); 
         return;
     }
     emitConstant(OBJ_VAL(copyString(parser.previous.start+1, len-2)));

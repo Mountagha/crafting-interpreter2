@@ -4,4 +4,5 @@
 //print max;
 //print (-1 + 2) * 3 - -4;
 var a = "Mo";
-print a;
+var b = "Mountagha";
+print a + b;

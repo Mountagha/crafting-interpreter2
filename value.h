@@ -65,7 +65,7 @@ typedef struct {
         bool boolean;
         double number;
         Obj* obj;
-        char smallString[6];
+        char smallString[MAX_LEN_SMALL_STRING];
     } as;
 } Value;
 
@@ -80,7 +80,7 @@ static inline Value copy_small_string(const char small_string[], int len) {
 #define IS_BOOL(value)          ((value).type == VAL_BOOL)
 #define IS_NIL(value)           ((value).type == VAL_NIL)
 #define IS_NUMBER(value)        ((value).type == VAL_NUMBER)
-#define IS_SMALL_STRING         ((value).type == VAL_SMALL_STRING)
+#define IS_SMALL_STRING(value)  ((value).type == VAL_SMALL_STRING)
 #define IS_OBJ(value)           ((value).type == VAL_OBJ)
 
 #define AS_OBJ(value)           ((value).as.obj)
@@ -92,7 +92,7 @@ static inline Value copy_small_string(const char small_string[], int len) {
 #define NIL_VAL                 ((Value){VAL_NIL, {.number = 0}})
 #define NUMBER_VAL(value)       ((Value){VAL_NUMBER, {.number = value}})
 #define OBJ_VAL(object)         ((Value){VAL_OBJ, {.obj = (Obj*)object}})
-#define OBJ_SMALL_STRING(value, len) copy_small_string(value, len)
+#define SMALL_STRING_VAL(value, len) copy_small_string(value, len)
 
 #endif
 

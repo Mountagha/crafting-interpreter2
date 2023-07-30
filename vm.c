@@ -226,26 +226,55 @@ static bool isFalsey(Value value) {
 }
 
 static void concatenate() {
-    ObjString* b = AS_STRING(peek(0));
-    ObjString* a = AS_STRING(peek(1));
+    char *s1, *s2;
+    int len1, len2;
+    if(IS_SMALL_STRING(peek(0))) {
+        s1 = AS_SMALL_STRING(peek(0));
+        len1 = strnlen(s1, MAX_LEN_SMALL_STRING);
+    } else {
+        s1 = AS_STRING(peek(0))->chars;
+        len1 = AS_STRING(peek(0))->length;
+    }
 
-    int length = a->length + b->length;
-    char* chars = ALLOCATE(char, length + 1);
-    memcpy(chars, a->chars, a->length);
-    memcpy(chars + a->length, b->chars, b->length);
-    chars[length] = '\0';
+    if(IS_SMALL_STRING(peek(1))) {
+        s2 = AS_SMALL_STRING(peek(1));
+        len2 = strnlen(s2, MAX_LEN_SMALL_STRING);
+    } else {
+        s2 = AS_STRING(peek(1))->chars;
+        len2 = AS_STRING(peek(1))->length;
+    }
+  
+    int length = len1 + len2; 
+    if (length + 1 < MAX_LEN_SMALL_STRING) {
+        // We are dealing with small strings
+        char chars[length+1];
+        memcpy(chars, s1, len1);
+        memcpy(chars + len1, s2, len2);
+        chars[length] = '\0';
+        pop();
+        pop();
+        push(SMALL_STRING_VAL(chars, length));
 
-    ObjString* result = takeString(chars, length);
-    pop();
-    pop();
-    push(OBJ_VAL(result)); 
+    } else {
+        // We dealing with bigger strings
+        char* chars = ALLOCATE(char, length + 1);
+        memcpy(chars, s1, len1);
+        memcpy(chars + len1, s2, len2);
+        chars[length] = '\0';
+
+        ObjString* result = takeString(chars, length);
+        pop();
+        pop();
+        push(OBJ_VAL(result)); 
+    }
 }
 
 static InterpretResult run() {
     CallFrame* frame = &vm.frames[vm.frameCount - 1];
 
 #define READ_BYTE() (*frame->ip++)
-#define READ_3_BYTE() ((*frame->ip++ << 16) | (*frame->ip++ << 8) | (*frame->ip++)) 
+//#define READ_3_BYTE() ((*frame->ip++ << 16) | (*frame->ip++ << 8) | (*frame->ip++)) 
+#define READ_3_BYTE() (frame->ip += 3, ((frame->ip[-3] << 16) | (frame->ip[-2] << 8) | (frame->ip[-1]))) 
 #define READ_CONSTANT() (frame->closure->function->chunk.constants.values[READ_BYTE()])
 #define READ_CONSTANT_OP() (frame->closure->function->chunk.constantsOp.values[READ_BYTE()])
 #define READ_CONSTANT_OP_LONG() (frame->closure->function->chunk.constantsOp.values[READ_3_BYTE()])
