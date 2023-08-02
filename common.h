@@ -6,7 +6,7 @@
 #include <stdint.h>
 
 //#define NAN_BOXING
-#define DEBUG_PRINT_CODE
+//#define DEBUG_PRINT_CODE
 #define MAX_LEN_SMALL_STRING 12
 //#define DEBUG_TRACE_EXECUTION
 

@@ -1,0 +1,14 @@
+
+var start = clock();
+var accum = "";
+var iter = 0;
+while (iter < 10) {
+  var iter = 0;
+  var a = "ab";
+  var b = "cd";
+  accum = accum + (a + b);
+  iter = iter + 1;
+}
+
+print clock() - start;
+print accum;
