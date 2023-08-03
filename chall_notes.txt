@@ -13,7 +13,7 @@ chap19-chall1:
 Flexible array members for ObjString chars members added.
 
 chap19-chall2:
-Let come back later ;)
+Let come back later ;). Got back to this.
 
 chap19-chall3:
 when trying to concatenate a string with another type we raise an error and exit as done
