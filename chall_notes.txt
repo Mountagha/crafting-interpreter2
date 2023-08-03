@@ -20,3 +20,8 @@ when trying to concatenate a string with another type we raise an error and exit
 in python interpreter. Other language implicitely convert the other type to string and 
 do the concatenation. We choose not to.
 
+chap30-chall2:
+Added small string optimization. I did a small benchamarking and noticed a huge difference 10x (0.008456 against 0.050852).
+however the string lenght may also be another factor that will biased the difference in performance (The strings in not small_small 
+string versions are much more longer than the one in the small string version which is the reason for for the optimization). 
+But it does definitely improve the running time.

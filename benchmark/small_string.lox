@@ -1,11 +1,25 @@
 
-var start = clock();
 var accum = "";
 var iter = 0;
-while (iter < 10) {
-  var iter = 0;
+// benchamark small strings
+var start = clock();
+while (iter < 1000) {
   var a = "ab";
   var b = "cd";
+  accum = accum + (a + b);
+  iter = iter + 1;
+}
+
+print clock() - start;
+print accum;
+
+// benchmark not small strings
+iter = 0;
+accum = "";
+start = clock();
+while (iter < 1000) {
+  var a = "MamadouMountagha";
+  var b = "MamadouMountagha";
   accum = accum + (a + b);
   iter = iter + 1;
 }
